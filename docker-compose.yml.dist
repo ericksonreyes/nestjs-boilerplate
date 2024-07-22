@@ -28,7 +28,7 @@ services:
     - 'npm_cache:/root/.npm'
     tty: true
     network_mode: host
-    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-nestjs"
+    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-nest"
 
 
   prisma:
@@ -41,7 +41,7 @@ services:
     - 'npm_cache:/root/.npm'
     tty: true
     networks:
-    - nestjs-prisma-network
+    - backend-network
     container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-prisma"
 
 
@@ -59,7 +59,7 @@ services:
     ports:
     - '${DOCKER_POSTGRESQL_PUBLIC_PORT:-5432}:5432'
     networks:
-    - nestjs-prisma-network
+    - backend-network
     container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-postgresql"
 
 
@@ -70,9 +70,9 @@ services:
     platform: linux/amd64
     restart: unless-stopped
     ports:
-    - "${DOCKER_ADMINER_PUBLIC_PORT:-8080}:80"
+    - "${DOCKER_ADMINER_PUBLIC_PORT:-8080}:9000"
     networks:
-    - nestjs-prisma-network
+    - backend-network
     container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-adminer"
 
 
@@ -89,12 +89,12 @@ services:
     - postgresql
     - adminer
     networks:
-    - nestjs-prisma-network
-    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-server"
+    - backend-network
+    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-app"
 
 networks:
-  nestjs-prisma-network:
-    name: "${DOCKER_NETWORK_NAME:-nestjs-prisma-network}"
+  backend-network:
+    name: "${DOCKER_NETWORK_NAME:-backend-network}"
 
 
 volumes:

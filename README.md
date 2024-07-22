@@ -112,6 +112,11 @@ DOCKER_ADMINER_PUBLIC_PORT=8080
 # NestJS REST API
 DOCKER_APPLICATION_PUBLIC_PORT=8000
 ```
+Then restart the docker services (if running).
+```bash
+$ docker-compose down
+$ docker-compose up -d app
+```
 
 ## Customizing docker container names
 If you want to customize your container names. For example, renaming a container
@@ -120,6 +125,11 @@ from `nestjs-prisma-postgresql` to `awesome-app-postgresql`.
 # DOCKER_CONTAINER_PREFIX=nestjs-prisma
 DOCKER_CONTAINER_PREFIX=awesome-app
 ```
+Then restart the docker services (if running).
+```bash
+$ docker-compose down
+$ docker-compose up -d app
+```
 
 ## Customizing docker network name
 If you want to customize your container network name. For example, renaming the network 
@@ -127,4 +137,9 @@ name from `nestjs-prisma-postgresql` to `awesome-app-postgresql`.
 ```dotenv
 # DOCKER_NETWORK_NAME=nestjs-prisma-network
 DOCKER_NETWORK_NAME=nestjs-prisma-network
+```
+Then restart the docker services (if running).
+```bash
+$ docker-compose down
+$ docker-compose up -d app
 ```
