@@ -71,3 +71,60 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+---
+# Using docker-compose.yml and bash installation script
+
+## Installation
+```bash
+# Execute in the root directory
+$ sh install.sh
+```
+
+## Using the docker utility containers
+```bash
+# NPM
+$ docker-compose run --rm npm <command>
+
+# Nest CLI
+$ docker-compose run --rm nest <command>
+
+$ Prisma CLI
+$ docker-compose run --rm prisma <command>
+```
+
+## Navigating the containers when installed used the installation script and ran using docker-compose.yml
+- NestJS REST API - [http://localhost:3000](http://localhost:3000)
+- [Adminer PostgreSQL Admin](https://www.adminer.org) - [http://localhost:8080](http://localhost:8080)
+
+## Customizing exposed ports.
+You can customize the exposed ports to prevent it from conflicting with other running containers or services. 
+So that you can use multiple instances of the service but on different ports. 
+Just modify the following entries in the `.env` file.
+
+```dotenv
+# PostgreSQL
+DOCKER_POSTGRESQL_PUBLIC_PORT=5432
+
+# Adminer
+DOCKER_ADMINER_PUBLIC_PORT=8080
+
+# NestJS REST API
+DOCKER_APPLICATION_PUBLIC_PORT=8000
+```
+
+## Customizing docker container names
+If you want to customize your container names. For example, renaming a container
+from `nestjs-prisma-postgresql` to `awesome-app-postgresql`.
+```dotenv
+# DOCKER_CONTAINER_PREFIX=nestjs-prisma
+DOCKER_CONTAINER_PREFIX=awesome-app
+```
+
+## Customizing docker network name
+If you want to customize your container network name. For example, renaming the network 
+name from `nestjs-prisma-postgresql` to `awesome-app-postgresql`.
+```dotenv
+# DOCKER_NETWORK_NAME=nestjs-prisma-network
+DOCKER_NETWORK_NAME=nestjs-prisma-network
+```
