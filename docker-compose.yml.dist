@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+
+
+  npm:
+    init: true
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/npm.Dockerfile
+    volumes:
+    - './:/var/www/html:delegated'
+    - 'npm_cache:/root/.npm'
+    tty: true
+    network_mode: host
+    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-npm"
+
+
+  nest:
+    init: true
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/nest.Dockerfile
+    volumes:
+    - './:/var/www/html:delegated'
+    - 'npm_cache:/root/.npm'
+    tty: true
+    network_mode: host
+    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-nestjs"
+
+
+  prisma:
+    init: true
+    build:
+      context: .
+      dockerfile: docker/prisma.Dockerfile
+    volumes:
+    - './:/var/www/html:delegated'
+    - 'npm_cache:/root/.npm'
+    tty: true
+    networks:
+    - nestjs-prisma-network
+    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-prisma"
+
+
+  postgresql:
+    build:
+      context: .
+      dockerfile: docker/postgres.Dockerfile
+    environment:
+      POSTGRES_DB: "${DB_DATABASE:-referrals_db}"
+      POSTGRES_USER: "${DB_USERNAME:-root}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
+    volumes:
+    - 'postgres_data:/var/lib/postgresql/data'
+    restart: unless-stopped
+    ports:
+    - '${DOCKER_POSTGRESQL_PUBLIC_PORT:-5432}:5432'
+    networks:
+    - nestjs-prisma-network
+    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-postgresql"
+
+
+  adminer:
+    build:
+      context: .
+      dockerfile: docker/adminer.Dockerfile
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+    - "${DOCKER_ADMINER_PUBLIC_PORT:-8080}:80"
+    networks:
+    - nestjs-prisma-network
+    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-adminer"
+
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
+    ports:
+    - '${DOCKER_APPLICATION_PUBLIC_PORT:-3000}:3000'
+    volumes:
+    - './:/var/www/html:delegated'
+    restart: unless-stopped
+    depends_on:
+    - postgresql
+    - adminer
+    networks:
+    - nestjs-prisma-network
+    container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-server"
+
+networks:
+  nestjs-prisma-network:
+    name: "${DOCKER_NETWORK_NAME:-nestjs-prisma-network}"
+
+
+volumes:
+  postgres_data:
+  npm_cache:
