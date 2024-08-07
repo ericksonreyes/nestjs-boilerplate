@@ -74,7 +74,7 @@ services:
     environment:
       ADMINER_DEFAULT_DB_DRIVER: pgsql
       ADMINER_DEFAULT_DB_HOST: 5432
-      ADMINER_DEFAULT_DB_NAME: "${DB_DATABASE:-nestjs_db}"
+      ADMINER_DEFAULT_DB_NAME: "${DB_DATABASE:-referrals_db}"
     networks:
     - backend-network
     container_name: "${DOCKER_CONTAINER_PREFIX:-nestjs-prisma}-adminer"

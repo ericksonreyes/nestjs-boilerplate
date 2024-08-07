@@ -40,13 +40,6 @@ if [ "$choice" = "Y" ]; then
     printf "$green" "# File .env already exists."
   fi
 
-  if [[ ! -f docker-compose.yml ]]; then
-    cp docker-compose.yml.dist docker-compose.yml
-    printf "$green" "# Copied docker-compose.yml"
-  else
-    printf "$green" "# File docker-compose.yml already exists."
-  fi
-
   printf "$green" "# "
   printf "$green" "#########################################################################"
 

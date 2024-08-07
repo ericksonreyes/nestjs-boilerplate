@@ -70,9 +70,6 @@ build/config\.gypi
 .env.production.local
 .env.local
 
-# Docker
-docker-compose.yml
-
 # Lock files
 .npmrc
 pnpm-lock.yaml
