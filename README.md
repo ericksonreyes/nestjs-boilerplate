@@ -95,8 +95,8 @@ $ docker-compose run --rm prisma <command>
 
 ## Navigating the containers when installed used the installation script and ran using docker-compose.yml
 - NestJS REST API - [http://localhost:3000](http://localhost:3000)
-- [Adminer PostgreSQL Admin](https://www.adminer.org) - [http://localhost:8080](http://localhost:8080)
-- NestJS REST API Swagger Documentation - [http://localhost:8000/swagger]
+- [Adminer](https://www.adminer.org) PostgreSQL Admin - [http://localhost:8080](http://localhost:8080)
+- NestJS REST API Swagger Documentation - [http://localhost:8000/swagger](http://localhost:8000/swagger)
 
 ## Customizing exposed ports.
 You can customize the exposed ports to prevent it from conflicting with other running containers or services. 
