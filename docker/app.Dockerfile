@@ -2,8 +2,6 @@ FROM node:18-alpine
 
 RUN npm i -g @nestjs/cli
 
-RUN npm i -g jest
-
 WORKDIR /var/www/html
 
 COPY . .
