@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -13,19 +14,72 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model EventLogs {
+enum lead_source {
+  email
+  phone
+  api
+}
+
+model Lead {
   // Attributes
-  id         Int    @id @default(autoincrement())
-  event_name String @db.VarChar(150)
-  model_name String @db.VarChar(100)
-  model_id   Int    @db.Integer
-  event_data Json   @db.Json
+  id          Int         @id @default(autoincrement())
+  name        String      @db.VarChar(150)
+  is_active   Boolean?    @default(true) @db.Boolean
+  lead_source lead_source @default(api)
 
   // Timestamps
   created_at DateTime @default(now()) @db.Timestamp()
-  created_by String   @db.VarChar(100)
+  updated_at DateTime @updatedAt
+
+  // Relationships
+  messages   Message[]   @relation("lead_to_messages_relationship")
+  lead_email LeadEmail[]
 
   // Indexes
   @@index([created_at])
-  @@index([created_by])
+  // Table mapping
+  @@map("leads")
+}
+
+// Just an example for one to one relationship
+model LeadEmail {
+  // Attributes
+  id      Int    @id @default(autoincrement())
+  email   String @unique @db.VarChar(255)
+  lead_id Int
+
+  // Timestamps
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+
+  // Relationships
+  lead Lead? @relation(fields: [lead_id], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([lead_id])
+  @@index([created_at])
+  // Table mapping
+  @@map("leads_email")
+}
+
+model Message {
+  // Attributes
+  id                Int    @id @default(autoincrement())
+  message           String @db.Text
+  metadata          Json?  @db.Json // Nullable JSON field
+  message_timestamp Float // Just an example on how to use Float data field
+  lead_id           Int
+
+  // Relationships
+  lead Lead @relation("lead_to_messages_relationship", fields: [lead_id], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+
+  // Indexes
+  @@index([lead_id])
+  @@index([created_at])
+  // Table mapping
+  @@map("messages")
 }

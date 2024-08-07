@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
+import {LeadsModule} from "./modules/leads/leads.module";
+import {PrismaService} from "./prisma.service";
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [LeadsModule],
+  providers: [PrismaService]
 })
-export class AppModule {}
+export class AppModule  implements NestModule{
+  configure(_: MiddlewareConsumer): any {
+  }
+}

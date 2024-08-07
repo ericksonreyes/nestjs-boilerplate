@@ -2,17 +2,17 @@ FROM node:18-alpine
 
 RUN npm i -g @nestjs/cli
 
-RUN npm i -g jest
-
 WORKDIR /var/www/html
 
 COPY . .
 
 RUN npm install
 
+RUN npm run build
+
 RUN npx prisma generate
 
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]
 
 EXPOSE 3000
 
