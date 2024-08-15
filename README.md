@@ -137,7 +137,7 @@ If you want to customize your container network name. For example, renaming the 
 name from `nestjs-prisma-postgresql` to `awesome-app-postgresql`.
 ```dotenv
 # DOCKER_NETWORK_NAME=nestjs-prisma-network
-DOCKER_NETWORK_NAME=nestjs-prisma-network
+DOCKER_NETWORK_NAME=awesome-prisma-network
 ```
 Then restart the docker services (if running).
 ```bash
